@@ -1,34 +1,49 @@
-<script>
-	export let name;
+<script lang="ts">
+  import Household from "./Household.svelte";
+  import { getPop, listStates } from "./covid";
+  import type { HouseholdType } from "./types";
 
-	let people = [];
+  let households: HouseholdType[] = [
+    {
+      name: "Your Household",
+      people: [
+        {
+          name: "You",
+          age: null,
+        },
+      ],
+      address: {},
+    },
+  ];
 
-	functiona cncuni
+  let states = [" ", ...listStates()].sort();
+
+  function addHousehold() {
+    households = [
+      ...households,
+      {
+        name: "New Household",
+        people: [],
+        address: {},
+      },
+    ];
+  }
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
-
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
 </style>
+
+<main>
+  <h1>Deadly Thanksgiving</h1>
+  <h2>Households</h2>
+  <ul>
+    {#each households as household}
+      <Household
+        {states}
+        bind:people={household.people}
+        name={household.name} />
+    {/each}
+  </ul>
+  <button on:click={addHousehold}>add household</button>
+  <div>Risk:</div>
+</main>
