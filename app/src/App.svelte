@@ -38,10 +38,12 @@
   <h2>Households</h2>
   <ul>
     {#each households as household}
-      <Household
-        {states}
-        bind:people={household.people}
-        name={household.name} />
+      <li>
+        <Household
+          {states}
+          bind:people={household.people.length}
+          name={household.name} />
+      </li>
     {/each}
   </ul>
   <button on:click={addHousehold}>add household</button>

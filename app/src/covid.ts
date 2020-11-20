@@ -13,8 +13,14 @@ function listStates(): string[] {
   return stateList;
 }
 
+function listCounties(state: string) {
+  return covidPop.filter(it => it.state == state).map(it => it.county);
+}
+
 function getPop(state: string, county: string = null): number {
-  if (!state) throw 'must supply state';
+  if (!state && county) throw 'must supply state with county';
+
+  if (!state) return covidPop.reduce((acum, next) => acum + next.pop, 0);
 
   if (county)
     return covidPop.filter(item => item.state == state && item.county == county)[0].pop;
@@ -57,4 +63,12 @@ function getInfectionCount(state: string = null, county: string = null): number 
   return stateInfectionCache[state];
 }
 
-export { listStates, getPop, getInfectionCount }
+function getInfectionRate(state: string = null, county: string = null) {
+  return getInfectionCount(state, county) / getPop(state, county);
+}
+
+function chanceToBeInfectedInPast(numDays: number, state: string = null, county: string = null) {
+  return getInfectionRate(state, county) * numDays;
+}
+
+export { listStates, listCounties, getPop, getInfectionCount, getInfectionRate, chanceToBeInfectedInPast }

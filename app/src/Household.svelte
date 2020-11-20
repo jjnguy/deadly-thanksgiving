@@ -1,50 +1,41 @@
 <script lang="ts">
-  import { getInfectionCount } from "./covid";
-
-  import type { PersonType } from "./types";
+  import {
+    chanceToBeInfectedInPast,
+    getInfectionRate,
+    listCounties,
+  } from "./covid";
 
   export let states: string[];
   export let name: string;
-  export let people: PersonType[];
+  export let people: number;
 
-  let state = "";
+  let state = "MN";
 
-  let under18 = people.filter((person) => person.age < 18).length;
-  let middle = people.filter(
-    (person) => person.age == null || (person.age >= 18 && person.age <= 70)
-  ).length;
-  let over70 = people.filter((person) => person.age > 70).length;
+  $: counties = listCounties(state);
 
-  function adjustPeople() {
-    people = [
-      ...Object.keys(new Array(under18)).map((_) => 12),
-      ...Object.keys(new Array(middle)).map((_) => 33),
-      ...Object.keys(new Array(under18)).map((_) => 75),
-    ].map((age) => ({ name: "unknown", age: age }));
-  }
+  let county = null;
 </script>
 
-<li>
-  <div>{name}</div>
-  <label>state
-    <select bind:value={state}>
-      {#each states as state}
-        <option>{state}</option>
+<div>{name}</div>
+<label>state
+  <select bind:value={state}>
+    {#each states as state}
+      <option>{state}</option>
+    {/each}
+  </select>
+</label>
+{#if state}
+  <label>county
+    <select bind:value={county}>
+      {#each counties as county}
+        <option>{county}</option>
       {/each}
-    </select></label><span>Infections in the last 7 days ({getInfectionCount(state)})</span>
-  <h3>People</h3>
-  <ul>
-    <li>
-      Under 18
-      <input type="number" bind:value={under18} on:change={adjustPeople} />
-    </li>
-    <li>
-      18 to 70
-      <input type="number" bind:value={middle} on:change={adjustPeople} />
-    </li>
-    <li>
-      Over 70
-      <input type="number" bind:value={over70} on:change={adjustPeople} />
-    </li>
-  </ul>
-</li>
+    </select>
+  </label>
+{/if}
+<span>Chance of individual being infected in past 14 days %{(chanceToBeInfectedInPast(14, state, county) * 100).toFixed(4)}</span>
+<h3>People</h3>
+<input bind:value={people} type="number" />
+<div>
+  Chance of household being infected in past 14 days %{(chanceToBeInfectedInPast(14, state, county) * people * 100).toFixed(4)}
+</div>
