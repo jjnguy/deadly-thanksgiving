@@ -5,8 +5,7 @@ export type PersonType = {
 }
 
 export type HouseholdType = {
-  name: string
-  people: PersonType[]
+  size: number
   address: AddressType
 }
 

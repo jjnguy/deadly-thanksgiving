@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Household from "./Household.svelte";
+  import HouseholdBuilder from "./HouseholdBuilder.svelte";
   import { getPop, listStates } from "./covid";
   import type { HouseholdType } from "./types";
 
@@ -15,8 +15,6 @@
       address: {},
     },
   ];
-
-  let states = [" ", ...listStates()].sort();
 
   function addHousehold() {
     households = [
@@ -39,8 +37,7 @@
   <ul>
     {#each households as household}
       <li>
-        <Household
-          {states}
+        <HouseholdBuilder
           bind:people={household.people.length}
           name={household.name} />
       </li>
