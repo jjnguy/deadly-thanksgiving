@@ -10,7 +10,10 @@
 </script>
 
 <label>state
-  <select bind:value={addr.state} on:blur={() => (addr.county = null)}>
+  <select
+    bind:value={addr.state}
+    on:change={() => (addr.county = null)}
+    on:blur={() => (addr.county = null)}>
     {#each states as state}
       <option>{state}</option>
     {/each}

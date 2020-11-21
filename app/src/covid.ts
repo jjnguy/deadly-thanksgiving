@@ -49,8 +49,11 @@ function getInfectionCount(addr: AddressType): number {
     return overallInfectionAverage;
   }
 
-  if (addr.county)
-    return covidInfections.filter(item => item.state == addr.state && item.county == addr.county)[0].avgInfected;
+  if (addr.county) {
+    let cty = covidInfections.filter(item => item.state == addr.state && item.county == addr.county)[0];
+    if (cty) return cty.avgInfected;
+    return getInfectionCount({ state: addr.state });
+  }
 
   if (!stateInfectionCache[addr.state]) {
     let stateEntries = covidInfections
@@ -76,11 +79,12 @@ function chanceForHouseholdToBeInfectedInPast(numDays: number, household: Househ
   if (household.size == 1) return chanceForIndividualToBeInfectedInPast(numDays, household.address);
 
   let probOne = chanceForIndividualToBeInfectedInPast(numDays, household.address);
-  let sum = probOne * household.size;
-  let combinations = nCr(household.size, 2) * Math.pow(probOne, 2);
-  let all = Math.pow(probOne, household.size);
-  console.log(`${sum} - ${combinations} + ${all}`);
-  return sum - combinations + all;
+  let combinations = 0;
+  for (let i = 1; i <= household.size; i++) {
+    let sign = i % 2 == 0 ? -1 : 1;
+    combinations += sign * (nCr(household.size, i) * Math.pow(probOne, i));
+  }
+  return combinations;
 }
 
 function nCr(n: number, r: number): number {

@@ -5,13 +5,7 @@
 
   let households: HouseholdType[] = [
     {
-      name: "Your Household",
-      people: [
-        {
-          name: "You",
-          age: null,
-        },
-      ],
+      size: 1,
       address: {},
     },
   ];
@@ -20,8 +14,7 @@
     households = [
       ...households,
       {
-        name: "New Household",
-        people: [],
+        size: 1,
         address: {},
       },
     ];
@@ -37,9 +30,7 @@
   <ul>
     {#each households as household}
       <li>
-        <HouseholdBuilder
-          bind:people={household.people.length}
-          name={household.name} />
+        <HouseholdBuilder bind:people={household.size} />
       </li>
     {/each}
   </ul>
