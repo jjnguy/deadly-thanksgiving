@@ -23,8 +23,11 @@ function getPop(addr: AddressType): number {
 
   if (!addr.state) return covidPop.reduce((acum, next) => acum + next.pop, 0);
 
-  if (addr.county)
-    return covidPop.filter(item => item.state == addr.state && item.county == addr.county)[0].pop;
+  if (addr.county) {
+    let cty = covidPop.filter(item => item.state == addr.state && item.county == addr.county)[0];
+    if (cty) return cty.pop;
+    return getPop({ state: addr.state });
+  }
 
   if (!statePopCache[addr.state]) {
     let result = covidPop
@@ -76,8 +79,6 @@ function chanceForIndividualToBeInfectedInPast(numDays: number, addr: AddressTyp
 }
 
 function chanceForHouseholdToBeInfectedInPast(numDays: number, household: HouseholdType) {
-  if (household.size == 1) return chanceForIndividualToBeInfectedInPast(numDays, household.address);
-
   let probOne = chanceForIndividualToBeInfectedInPast(numDays, household.address);
   let combinations = 0;
   for (let i = 1; i <= household.size; i++) {
@@ -86,6 +87,8 @@ function chanceForHouseholdToBeInfectedInPast(numDays: number, household: Househ
   }
   return combinations;
 }
+
+
 
 function nCr(n: number, r: number): number {
   return factorial(n) / (factorial(r) * factorial(n - r));

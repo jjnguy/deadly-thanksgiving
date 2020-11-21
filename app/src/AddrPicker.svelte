@@ -6,14 +6,23 @@
   export let addr: AddressType;
 
   let states = listStates().sort();
-  $: counties = listCounties(addr.state);
+  addr.state = states[0];
+  let counties = listCounties(addr.state);
+  if (counties) {
+    addr.county = counties[0];
+  }
+
+  function stateSelected() {
+    counties = listCounties(addr.state);
+    addr.county = counties[0];
+  }
 </script>
 
 <label>state
   <select
     bind:value={addr.state}
-    on:change={() => (addr.county = null)}
-    on:blur={() => (addr.county = null)}>
+    on:change={stateSelected}
+    on:blur={stateSelected}>
     {#each states as state}
       <option>{state}</option>
     {/each}

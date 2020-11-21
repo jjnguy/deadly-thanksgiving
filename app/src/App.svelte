@@ -7,6 +7,7 @@
     {
       size: 1,
       address: {},
+      name: "Your House",
     },
   ];
 
@@ -30,7 +31,7 @@
   <ul>
     {#each households as household}
       <li>
-        <HouseholdBuilder bind:people={household.size} />
+        <HouseholdBuilder bind:household />
       </li>
     {/each}
   </ul>

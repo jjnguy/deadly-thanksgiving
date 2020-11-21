@@ -4,21 +4,17 @@
     chanceForHouseholdToBeInfectedInPast,
     chanceForIndividualToBeInfectedInPast,
   } from "./covid";
+  import type { HouseholdType } from "./types";
 
-  export let people: number;
-
-  let addr = { state: "MN", county: null };
+  export let household: HouseholdType;
 </script>
 
-<AddrPicker bind:addr />
+<AddrPicker bind:addr={household.address} />
 <span>Chance of individual being infected in past 14 days
-  {(chanceForIndividualToBeInfectedInPast(14, addr) * 100).toFixed(4)}%</span>
+  {(chanceForIndividualToBeInfectedInPast(14, household.address) * 100).toFixed(4)}%</span>
 <h3>People</h3>
-<input bind:value={people} type="number" min="1" />
+<input bind:value={household.size} type="number" min="1" />
 <div>
   Chance of household being infected in past 14 days
-  {(chanceForHouseholdToBeInfectedInPast(14, {
-      address: addr,
-      size: people,
-    }) * 100).toFixed(4)}%
+  {(chanceForHouseholdToBeInfectedInPast(14, household) * 100).toFixed(4)}%
 </div>
