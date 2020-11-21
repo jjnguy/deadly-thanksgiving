@@ -25,6 +25,7 @@
   "dependencies": {
     "@rollup/plugin-json": "^4.1.0",
     "csv-parse": "^4.14.1",
+    "request": "^2.88.2",
     "sirv-cli": "^1.0.0"
   }
 }

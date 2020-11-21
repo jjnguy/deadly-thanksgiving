@@ -12,4 +12,5 @@ export type HouseholdType = {
 
 export type AddressType = {
   state?: string
+  county?: string
 }

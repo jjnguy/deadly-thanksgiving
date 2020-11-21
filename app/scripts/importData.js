@@ -1,9 +1,13 @@
 const fs = require('fs');
 const parse = require('csv-parse/lib/sync');
+const request = require('request');
 
-fs.readFile('app/resources/covid_confirmed_usafacts.csv', (err, data) => {
+request({
+  method: "GET",
+  url: "https://static.usafacts.org/public/data/covid-19/covid_confirmed_usafacts.csv"
+}, (err, response) => {
   if (err) throw err;
-  let records = parse(data, {
+  let records = parse(response.body, {
     skip_empty_lines: true
   });
 
@@ -48,9 +52,12 @@ fs.readFile('app/resources/covid_confirmed_usafacts.csv', (err, data) => {
   });
 })
 
-fs.readFile('app/resources/covid_county_population_usafacts.csv', (err, data) => {
+request({
+  method: "GET",
+  url: "https://static.usafacts.org/public/data/covid-19/covid_county_population_usafacts.csv"
+}, (err, response) => {
   if (err) throw err;
-  let records = parse(data, {
+  let records = parse(response.body, {
     skip_empty_lines: true
   });
 

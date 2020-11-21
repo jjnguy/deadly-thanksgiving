@@ -1,5 +1,6 @@
 import covidInfections from "./covid_infections.json";
 import covidPop from "./covid_populations.json";
+import type { AddressType } from "./types";
 
 
 let statePopCache: Map<string, number> = new Map<string, number>();
@@ -14,61 +15,61 @@ function listStates(): string[] {
 }
 
 function listCounties(state: string) {
-  return covidPop.filter(it => it.state == state).map(it => it.county);
+  return covidPop.filter(it => it.state == state && it.county != "Statewide Unallocated").map(it => it.county);
 }
 
-function getPop(state: string, county: string = null): number {
-  if (!state && county) throw 'must supply state with county';
+function getPop(addr: AddressType): number {
+  if (!addr.state && addr.county) throw 'must supply state with county';
 
-  if (!state) return covidPop.reduce((acum, next) => acum + next.pop, 0);
+  if (!addr.state) return covidPop.reduce((acum, next) => acum + next.pop, 0);
 
-  if (county)
-    return covidPop.filter(item => item.state == state && item.county == county)[0].pop;
+  if (addr.county)
+    return covidPop.filter(item => item.state == addr.state && item.county == addr.county)[0].pop;
 
-  if (!statePopCache[state]) {
+  if (!statePopCache[addr.state]) {
     let result = covidPop
-      .filter(pop => pop.state == state)
+      .filter(pop => pop.state == addr.state)
       .reduce((acum, next) => acum + next.pop, 0);
 
-    statePopCache[state] = result;
+    statePopCache[addr.state] = result;
   }
 
-  return statePopCache[state];
+  return statePopCache[addr.state];
 }
 
 let stateInfectionCache: Map<string, number> = new Map<string, number>();
 let overallInfectionAverage: number = null;
-function getInfectionCount(state: string = null, county: string = null): number {
-  if (!state && county) throw 'must supply state with county';
+function getInfectionCount(addr: AddressType): number {
+  if (!addr.state && addr.county) throw 'must supply state with county';
 
-  if (!state && !county) {
+  if (!addr.state && !addr.county) {
     if (!overallInfectionAverage) {
       overallInfectionAverage = covidInfections.reduce((acum, next) => acum + next.avgInfected, 0) / covidInfections.length;
     }
     return overallInfectionAverage;
   }
 
-  if (county)
-    return covidInfections.filter(item => item.state == state && item.county == county)[0].avgInfected;
+  if (addr.county)
+    return covidInfections.filter(item => item.state == addr.state && item.county == addr.county)[0].avgInfected;
 
-  if (!stateInfectionCache[state]) {
+  if (!stateInfectionCache[addr.state]) {
     let stateEntries = covidInfections
-      .filter(item => item.state == state);
+      .filter(item => item.state == addr.state);
     let result = stateEntries
       .reduce((acum, next) => acum + next.avgInfected, 0) / stateEntries.length;
 
-    stateInfectionCache[state] = result;
+    stateInfectionCache[addr.state] = result;
   }
 
-  return stateInfectionCache[state];
+  return stateInfectionCache[addr.state];
 }
 
-function getInfectionRate(state: string = null, county: string = null) {
-  return getInfectionCount(state, county) / getPop(state, county);
+function getInfectionRate(addr: AddressType) {
+  return getInfectionCount(addr) / getPop(addr);
 }
 
-function chanceToBeInfectedInPast(numDays: number, state: string = null, county: string = null) {
-  return getInfectionRate(state, county) * numDays;
+function chanceToBeInfectedInPast(numDays: number, addr: AddressType) {
+  return getInfectionRate(addr) * numDays;
 }
 
 export { listStates, listCounties, getPop, getInfectionCount, getInfectionRate, chanceToBeInfectedInPast }
