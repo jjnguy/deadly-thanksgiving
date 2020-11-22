@@ -123,22 +123,22 @@
     {/each}
   </ul>
   <button on:click={addHousehold}>add household</button>
+  <div style="margin-top: 20px">
+    Icons made by
+    <a
+      href="https://www.flaticon.com/authors/freepik"
+      target="_blank"
+      title="Freepik">Freepik</a>
+    from
+    <a
+      href="https://www.flaticon.com/"
+      target="_blank"
+      title="Flaticon">www.flaticon.com</a>
+  </div>
+  <div>
+    PRs welcome -
+    <a
+      href="https://github.com/jjnguy/deadly-thanksgiving"
+      target="_blank">github.com/jjnguy/deadly-thanksgiving</a>
+  </div>
 </main>
-<div>
-  Icons made by
-  <a
-    href="https://www.flaticon.com/authors/freepik"
-    target="_blank"
-    title="Freepik">Freepik</a>
-  from
-  <a
-    href="https://www.flaticon.com/"
-    target="_blank"
-    title="Flaticon">www.flaticon.com</a>
-</div>
-<div>
-  PRs welcome -
-  <a
-    href="https://github.com/jjnguy/deadly-thanksgiving"
-    target="_blank">github.com/jjnguy/deadly-thanksgiving</a>
-</div>
