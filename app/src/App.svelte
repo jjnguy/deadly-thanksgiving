@@ -141,4 +141,8 @@
       href="https://github.com/jjnguy/deadly-thanksgiving"
       target="_blank">github.com/jjnguy/deadly-thanksgiving</a>
   </div>
+  <div>
+    Data from
+    https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/
+  </div>
 </main>
