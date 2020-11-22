@@ -26,7 +26,7 @@ function nWiseArray<T>(n, array: Array<T>): Array<Array<T>> {
     all = all.concat(result);
   }
 
-  if (all.length != nCr(array.length, n)) throw `${array.length}C${n} should be '${nCr(array.length, n)} - was ${all.length}'`;
+  if (Math.abs(all.length - nCr(array.length, n)) > .0001) throw `${array.length}C${n} should be '${nCr(array.length, n)} - was ${all.length}'`;
 
   return all;
 }
