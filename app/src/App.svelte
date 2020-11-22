@@ -2,6 +2,7 @@
   import HouseholdBuilder from "./HouseholdBuilder.svelte";
   import { chanceForHouseholdsToBeInfectedInPast } from "./covid";
   import type { HouseholdType } from "./types";
+  import RiskSummary from "./RiskSummary.svelte";
 
   let households: HouseholdType[] = [
     {
@@ -30,9 +31,6 @@
     background-color: white;
   }
 
-  .feature {
-    font-size: 1.2rem;
-  }
   h1 {
     text-align: center;
   }
@@ -40,6 +38,10 @@
     margin-left: auto;
     margin-right: auto;
     display: block;
+  }
+
+  footer {
+    border-top: 1px solid #dadada;
   }
 </style>
 
@@ -103,10 +105,7 @@
     positive. Build your guest list below.
   </p>
   <p>This tool is for 'fun' only. The math is rough.</p>
-  <p class="feature">
-    Chance of any guests being infected within the last 14 days:
-    {(chanceForHouseholdsToBeInfectedInPast(14, households) * 100).toFixed(3)}%
-  </p>
+  <RiskSummary {households} />
   <h2>Household{households.length == 1 ? '' : 's'}</h2>
   <div>
     <p>
@@ -123,26 +122,29 @@
     {/each}
   </ul>
   <button on:click={addHousehold}>add household</button>
-  <div style="margin-top: 20px">
-    Icons made by
-    <a
-      href="https://www.flaticon.com/authors/freepik"
-      target="_blank"
-      title="Freepik">Freepik</a>
-    from
-    <a
-      href="https://www.flaticon.com/"
-      target="_blank"
-      title="Flaticon">www.flaticon.com</a>
-  </div>
-  <div>
-    PRs welcome -
-    <a
-      href="https://github.com/jjnguy/deadly-thanksgiving"
-      target="_blank">github.com/jjnguy/deadly-thanksgiving</a>
-  </div>
-  <div>
-    Data from
-    https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/
-  </div>
+  <RiskSummary {households} />
+  <footer>
+    <div style="margin-top: 20px">
+      Icons made by
+      <a
+        href="https://www.flaticon.com/authors/freepik"
+        target="_blank"
+        title="Freepik">Freepik</a>
+      from
+      <a
+        href="https://www.flaticon.com/"
+        target="_blank"
+        title="Flaticon">www.flaticon.com</a>
+    </div>
+    <div>
+      PRs welcome -
+      <a
+        href="https://github.com/jjnguy/deadly-thanksgiving"
+        target="_blank">github.com/jjnguy/deadly-thanksgiving</a>
+    </div>
+    <div>
+      Data from
+      https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/
+    </div>
+  </footer>
 </main>
