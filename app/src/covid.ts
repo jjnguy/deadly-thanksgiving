@@ -1,5 +1,6 @@
 import covidInfections from "./covid_infections.json";
 import covidPop from "./covid_populations.json";
+import { nCr } from "./my_math";
 import type { AddressType, HouseholdType } from "./types";
 
 
@@ -88,19 +89,17 @@ function chanceForHouseholdToBeInfectedInPast(numDays: number, household: Househ
   return combinations;
 }
 
-
-
-function nCr(n: number, r: number): number {
-  return factorial(n) / (factorial(r) * factorial(n - r));
+function chanceForHouseholdsToBeInfectedInPast(numDays: number, households: HouseholdType[]) {
+  // TODO: figure this complex shit out
+  // List all probabilities - then create all combinations of all sizes. Loop through and combine
+  let probOne = chanceForIndividualToBeInfectedInPast(numDays, household.address);
+  let combinations = 0;
+  for (let i = 1; i <= household.size; i++) {
+    let sign = i % 2 == 0 ? -1 : 1;
+    combinations += sign * (nCr(household.size, i) * Math.pow(probOne, i));
+  }
+  return combinations;
 }
 
-let memory = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600, 6227020800, 87178291200, 1307674368000, 20922789888000];
-function factorial(n: number): number {
-  if (n < 0) return 0;
-  if (n < memory.length) return memory[n];
-  let result = factorial(n - 1) * n;
-  memory[n] = result;
-  return result;
-}
 
 export { listStates, listCounties, getPop, getInfectionCount, getInfectionRate, chanceForIndividualToBeInfectedInPast, chanceForHouseholdToBeInfectedInPast }
