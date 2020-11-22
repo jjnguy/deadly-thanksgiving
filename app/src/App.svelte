@@ -107,7 +107,7 @@
     Chance of any guests being infected within the last 14 days:
     {(chanceForHouseholdsToBeInfectedInPast(14, households) * 100).toFixed(3)}%
   </p>
-  <h2>Household(s)</h2>
+  <h2>Household{households.length == 1 ? '' : 's'}</h2>
   <div>
     <p>
       Build your Thanksgiving party below. Choose a state and county each

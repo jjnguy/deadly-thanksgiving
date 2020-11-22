@@ -13,20 +13,14 @@ function factorial(n: number): number {
 
 function nWiseArray<T>(n, array: Array<T>): Array<Array<T>> {
   if (array.length < n) throw 'array not long enough';
-  if (n == array.length) return [Array.from(array)];
+  if (n == array.length) return [array];
   if (n == 1) return array.map(it => [it]);
 
   let all = [];
 
   for (let i = 0; i <= array.length - n; i++) {
-    let first = array[i];
-    let rest = array.slice(i + 1);
-
-    let result = nWiseArray(n - 1, rest).map(item => [first, ...item]);
-    all = all.concat(result);
+    all = all.concat(nWiseArray(n - 1, array.slice(i + 1)).map(item => [array[i], ...item]));
   }
-
-  if (Math.abs(all.length - nCr(array.length, n)) > .0001) throw `${array.length}C${n} should be '${nCr(array.length, n)} - was ${all.length}'`;
 
   return all;
 }

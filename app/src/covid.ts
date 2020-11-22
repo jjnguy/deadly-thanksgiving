@@ -90,8 +90,6 @@ function chanceForHouseholdToBeInfectedInPast(numDays: number, household: Househ
 }
 
 function chanceForHouseholdsToBeInfectedInPast(numDays: number, households: HouseholdType[]) {
-  // TODO: figure this complex shit out
-  // List all probabilities - then create all combinations of all sizes. Loop through and combine
   let probs = households.flatMap(h => new Array<number>(h.size).fill(chanceForIndividualToBeInfectedInPast(numDays, h.address)));
 
   let combinations = 0;
