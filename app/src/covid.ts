@@ -1,6 +1,6 @@
 import covidInfections from "./covid_infections.json";
 import covidPop from "./covid_populations.json";
-import { nCr } from "./my_math";
+import { nCr, nWiseArray } from "./my_math";
 import type { AddressType, HouseholdType } from "./types";
 
 
@@ -92,14 +92,16 @@ function chanceForHouseholdToBeInfectedInPast(numDays: number, household: Househ
 function chanceForHouseholdsToBeInfectedInPast(numDays: number, households: HouseholdType[]) {
   // TODO: figure this complex shit out
   // List all probabilities - then create all combinations of all sizes. Loop through and combine
-  let probOne = chanceForIndividualToBeInfectedInPast(numDays, household.address);
+  let probs = households.flatMap(h => new Array<number>(h.size).fill(chanceForIndividualToBeInfectedInPast(numDays, h.address)));
+  console.log(probs);
+
   let combinations = 0;
-  for (let i = 1; i <= household.size; i++) {
+  for (let i = 1; i <= probs.length; i++) {
     let sign = i % 2 == 0 ? -1 : 1;
-    combinations += sign * (nCr(household.size, i) * Math.pow(probOne, i));
+    combinations += sign * (nWiseArray(i, probs).reduce((acum, next) => acum + next.reduce((acum2, next2) => acum2 * next2, 1), 0));
   }
   return combinations;
 }
 
 
-export { listStates, listCounties, getPop, getInfectionCount, getInfectionRate, chanceForIndividualToBeInfectedInPast, chanceForHouseholdToBeInfectedInPast }
+export { listStates, listCounties, getPop, getInfectionCount, getInfectionRate, chanceForIndividualToBeInfectedInPast, chanceForHouseholdToBeInfectedInPast, chanceForHouseholdsToBeInfectedInPast }

@@ -1,6 +1,10 @@
 <script lang="ts">
   import HouseholdBuilder from "./HouseholdBuilder.svelte";
-  import { getPop, listStates } from "./covid";
+  import {
+    chanceForHouseholdsToBeInfectedInPast,
+    getPop,
+    listStates,
+  } from "./covid";
   import type { HouseholdType } from "./types";
 
   let households: HouseholdType[] = [
@@ -27,6 +31,10 @@
 
 <main>
   <h1>Deadly Thanksgiving</h1>
+  <div>
+    Chance of any guests being infected within the last 14 days:
+    {(chanceForHouseholdsToBeInfectedInPast(14, households) * 100).toFixed(4)}%
+  </div>
   <h2>Households</h2>
   <ul>
     {#each households as household}
@@ -36,5 +44,4 @@
     {/each}
   </ul>
   <button on:click={addHousehold}>add household</button>
-  <div>Risk:</div>
 </main>
