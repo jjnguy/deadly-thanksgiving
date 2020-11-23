@@ -7,7 +7,6 @@ export type PersonType = {
 export type HouseholdType = {
   size: number
   address: AddressType
-  name?: string
 }
 
 export type AddressType = {

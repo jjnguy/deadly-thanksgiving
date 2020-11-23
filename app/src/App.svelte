@@ -8,7 +8,6 @@
     {
       size: 1,
       address: {},
-      name: "Your House",
     },
   ];
 

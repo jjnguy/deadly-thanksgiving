@@ -98,7 +98,7 @@
       {(getInfectionRate(addr) * 100).toFixed(2)}
       infections per 100 people per day.
       {(chanceForIndividualToBeInfectedInPast(14, addr) * 100).toFixed(3)}%
-      chance of an individual in this county to have been infectd within the
+      chance of an individual in this county to have been infected within the
       14-day incubation period.
     </small>
   </div>
